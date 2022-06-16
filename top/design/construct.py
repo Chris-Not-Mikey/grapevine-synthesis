@@ -56,7 +56,7 @@ def construct():
     magic_drc       = Step(this_dir + '/open-magic-drc')
     magic_antenna   = Step(this_dir + '/open-magic-antenna')
     magic_gds2spice = Step(this_dir + '/open-magic-gds2spice')
-    # calibre_lvs     = Step(this_dir + '/mentor-calibre-comparison')
+    calibre_lvs     = Step(this_dir + '/mentor-calibre-comparison')
 
 
     dc.extend_inputs(['PE_up.db', 'PE_up.lef'])
@@ -77,7 +77,6 @@ def construct():
     cts.get_param('order').insert(0, "cts-overrides.tcl")
 
     pt_signoff.extend_inputs(['PE_up.db', 'PE_down.db', 'PE_left.db', 'PE_right.db'])
-    # calibre_lvs.extend_inputs(['PE_up.lvs.v', 'PE_down.lvs.v', 'PE_left.lvs.v', 'PE_right.lvs.v'])
 
     g.add_step(info)
     g.add_step(rtl)
@@ -101,7 +100,7 @@ def construct():
     g.add_step(magic_drc)
     g.add_step(magic_antenna)
     g.add_step(magic_gds2spice)
-
+    g.add_step(calibre_lvs)
 
     g.connect_by_name(adk,              dc)
     g.connect_by_name(constraints,      dc)
@@ -178,6 +177,11 @@ def construct():
     g.connect_by_name(gdsmerge,         magic_gds2spice)
     g.connect_by_name(PE,               magic_gds2spice)
 
+    g.connect_by_name(adk,              calibre_lvs)
+    g.connect_by_name(magic_gds2spice,  calibre_lvs)
+    g.connect_by_name(signoff,          calibre_lvs)
+    g.connect_by_name(PE,               calibre_lvs)
+
     g.update_params(parameters)
 
     return g
@@ -185,5 +189,6 @@ def construct():
 if __name__ == '__main__':
   g = construct()
   g.plot()
+
 
 

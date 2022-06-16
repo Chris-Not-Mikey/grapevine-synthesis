@@ -10,6 +10,7 @@ outputs:
   - PE_up.spef.gz
   - PE_up.vcs.pg.v
   - PE_up.vcs.v
+  - PE_up.lvs.v
   - PE_down.db
   - PE_down.gds
   - PE_down.lef
@@ -19,6 +20,7 @@ outputs:
   - PE_down.spef.gz
   - PE_down.vcs.pg.v
   - PE_down.vcs.v
+  - PE_down.lvs.v
   - PE_left.db
   - PE_left.gds
   - PE_left.lef
@@ -28,6 +30,7 @@ outputs:
   - PE_left.spef.gz
   - PE_left.vcs.pg.v
   - PE_left.vcs.v
+  - PE_left.lvs.v
   - PE_right.db
   - PE_right.gds
   - PE_right.lef
@@ -37,6 +40,7 @@ outputs:
   - PE_right.spef.gz
   - PE_right.vcs.pg.v
   - PE_right.vcs.v
+  - PE_right.lvs.v
 
 commands:
   - tar xzf PE_up.tar.gz
@@ -44,3 +48,4 @@ commands:
   - tar xzf PE_left.tar.gz
   - tar xzf PE_right.tar.gz
   - mv PE* outputs/
+
