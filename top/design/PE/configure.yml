@@ -1,0 +1,46 @@
+name: PE
+
+outputs:
+  - PE_up.db
+  - PE_up.gds
+  - PE_up.lef
+  - PE_up.lib
+  - PE_up.pt.sdc
+  - PE_up.sdf
+  - PE_up.spef.gz
+  - PE_up.vcs.pg.v
+  - PE_up.vcs.v
+  - PE_down.db
+  - PE_down.gds
+  - PE_down.lef
+  - PE_down.lib
+  - PE_down.pt.sdc
+  - PE_down.sdf
+  - PE_down.spef.gz
+  - PE_down.vcs.pg.v
+  - PE_down.vcs.v
+  - PE_left.db
+  - PE_left.gds
+  - PE_left.lef
+  - PE_left.lib
+  - PE_left.pt.sdc
+  - PE_left.sdf
+  - PE_left.spef.gz
+  - PE_left.vcs.pg.v
+  - PE_left.vcs.v
+  - PE_right.db
+  - PE_right.gds
+  - PE_right.lef
+  - PE_right.lib
+  - PE_right.pt.sdc
+  - PE_right.sdf
+  - PE_right.spef.gz
+  - PE_right.vcs.pg.v
+  - PE_right.vcs.v
+
+commands:
+  - tar xzf PE_up.tar.gz
+  - tar xzf PE_down.tar.gz
+  - tar xzf PE_left.tar.gz
+  - tar xzf PE_right.tar.gz
+  - mv PE* outputs/

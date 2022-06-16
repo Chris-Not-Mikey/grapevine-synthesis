@@ -1,0 +1,19 @@
+#=========================================================================
+# Custom Scripts -- init
+#=========================================================================
+
+name: custom-init
+
+#-------------------------------------------------------------------------
+# Inputs and Outputs
+#-------------------------------------------------------------------------
+
+outputs:
+  - floorplan.tcl
+  - pin-assignments.tcl
+  - dont-use-cells.tcl
+
+commands:
+  - cp floorplan_stub.tcl floorplan.tcl
+  - python3 place_PE.py >> floorplan.tcl
+  - cp floorplan.tcl outputs/floorplan.tcl

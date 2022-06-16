@@ -1,0 +1,11 @@
+name: rtl
+
+outputs:
+  - design.v
+  - design.vcs.v
+
+commands:
+  - cp top_stub.txt top.v
+  - python3 gen_top.py >> top.v
+  - cat *.v > outputs/design.v
+  - cat *.v > outputs/design.vcs.v

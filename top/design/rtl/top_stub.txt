@@ -1,0 +1,69 @@
+module Top (
+    input               wb_clk_i,
+    input               wb_rst_i,
+    input               wbs_stb_i,
+    input               wbs_cyc_i,
+    input               wbs_we_i,
+    input [3:0]         wbs_sel_i,
+    input [31:0]        wbs_dat_i,
+    input [31:0]        wbs_adr_i,
+    output wire         wbs_ack_o,
+    output wire [31:0]  wbs_dat_o
+);
+
+    wire [31:0]     br_dat, br_adr;
+    wire [15:0]     rx, tx;
+    wire [7:0]      rx_bits;
+    wire            rx_toggle, tx_toggle;
+    WB_INTF #(
+        .WB_WID(32),
+        .NOC_WID(16)
+    ) i_WB_INTF (
+        .en           (1'b1),
+        .wb_clk_i     (wb_clk_i),
+        .wb_rst_i     (wb_rst_i),
+        .wbs_stb_i    (wbs_stb_i),
+        .wbs_cyc_i    (wbs_cyc_i),
+        .wbs_we_i     (wbs_we_i),
+        .wbs_sel_i    (wbs_sel_i),
+        .wbs_dat_i    (wbs_dat_i),
+        .wbs_adr_i    (wbs_adr_i),
+        .wbs_ack_o    (wbs_ack_o),
+        .wbs_dat_o    (wbs_dat_o),
+        .repeat_dat   (br_dat),
+        .repeat_adr   (br_adr),
+        .noc_rx       (rx),
+        .noc_rx_bits  (rx_bits),
+        .noc_rx_toggle(rx_toggle),
+        .noc_tx       (tx),
+        .noc_tx_toggle(tx_toggle)
+    );
+
+
+    wire            top_rx_req, top_rx_ack;
+    wire [1:0]      top_rx_d;
+    RX_INTF #(
+        .NOC_WID(16)
+    ) i_RX_INTF (
+        .clk      (wb_clk_i),
+        .rst      (wb_rst_i),
+        .rx       (rx),
+        .rx_bits  (rx_bits),
+        .rx_toggle(rx_toggle),
+        .rx_req   (top_rx_req),
+        .rx_d     (top_rx_d),
+        .rx_ack   (top_rx_ack)
+    );
+
+    wire [31:0]     top_tx_d;
+    wire            top_tx_ack;
+    TX_INTF #(
+        .NOC_WID(16)
+    ) i_TX_INTF (
+        .clk   (wb_clk_i),
+        .rst   (wb_rst_i),
+        .tx    (tx),
+        .tx_d  (top_tx_d),
+        .tx_ack(top_tx_ack)
+    );
+
