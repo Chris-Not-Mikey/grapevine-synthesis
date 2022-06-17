@@ -1,5 +1,5 @@
 # Constants
-L = 6                       # (2^L - 1) PEs
+L = 5                       # (2^L - 1) PEs
 BASE_ADDR = 0x3000_0000     # Base address of root PE
 
 PE_COUNT = 0                # Incremented during runtime

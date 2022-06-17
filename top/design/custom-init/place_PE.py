@@ -16,4 +16,4 @@ def placeInstance(L, name, ws, hs):
         placeInstance(L-1, f"{name}l", (ws[0],w), hs)
         placeInstance(L-1, f"{name}r", (w,ws[1]), hs)
 
-placeInstance(6, "i_Top/r", (0,W), (0,H))
+placeInstance(5, "i_Top/r", (0,W), (0,H))
