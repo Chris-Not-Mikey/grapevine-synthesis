@@ -41,7 +41,7 @@ def construct():
     iflow           = Step('cadence-innovus-flowsetup', default=True)
     custom_init     = Step(this_dir + '/custom-init')
     init            = Step('cadence-innovus-init', default=True)
-    custom_power     = Step(this_dir + '/custom-power')
+    custom_power    = Step(this_dir + '/custom-power')
     power           = Step('cadence-innovus-power', default=True)
     place           = Step('cadence-innovus-place', default=True)
     cts             = Step('cadence-innovus-cts', default=True)
@@ -52,6 +52,7 @@ def construct():
     genlibdb        = Step('cadence-genus-genlib', default=True)        # Stolen from Charles
     lib2db          = Step(this_dir + '/convert-lib2db')                # Stolen from Charles
     gdsmerge        = Step('mentor-calibre-gdsmerge', default=True)
+    magic_drc       = Step(this_dir + '/open-magic-drc')
 
     iflow.extend_inputs(custom_flowstep.all_outputs())
     init.extend_inputs(custom_init.all_outputs())
@@ -76,6 +77,7 @@ def construct():
     g.add_step(genlibdb)
     g.add_step(lib2db)
     g.add_step(gdsmerge)
+    g.add_step(magic_drc)
 
 
     g.connect_by_name(adk,              dc)
@@ -131,6 +133,9 @@ def construct():
     g.connect_by_name(adk,              gdsmerge)
     g.connect_by_name(signoff,          gdsmerge)
 
+    g.connect_by_name(adk,              magic_drc)
+    g.connect_by_name(gdsmerge,         magic_drc)
+
     g.update_params(parameters)
 
     return g
@@ -138,5 +143,6 @@ def construct():
 if __name__ == '__main__':
   g = construct()
   g.plot()
+
 
 
