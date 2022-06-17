@@ -27,6 +27,10 @@ v2lvs -i \
 v2lvs -i \
       -lsp inputs/adk/stdcells.spi -s inputs/adk/stdcells.spi \
       -lsp source.added -s source.added \
+      -lsp PE_up.sp -s PE_up.sp \
+      -lsp PE_down.sp -s PE_down.sp \
+      -lsp PE_left.sp -s PE_left.sp \
+      -lsp PE_right.sp -s PE_right.sp \
       -v inputs/design.lvs.v -o design.lvs.v.spice \
       -log v2lvs_design.log
 
