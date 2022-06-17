@@ -1,0 +1,3 @@
+[submodule "caravel_user_project"]
+	path = caravel_user_project
+	url = git@github.com:PriyankaDilip/caravel_user_project.git
