@@ -57,26 +57,32 @@ def construct():
     magic_antenna   = Step(this_dir + '/open-magic-antenna')
     magic_gds2spice = Step(this_dir + '/open-magic-gds2spice')
     calibre_lvs     = Step(this_dir + '/mentor-calibre-comparison')
+    # NEW ! For efabless
+    pt_ptpx_genlibdb = Step(this_dir + '/synopsys-ptpx-genlibdb')
 
-
+    #pt_ptpx_genlibdb.extend_inputs(['sky130_sram_1kbyte_1rw1r_32x256_8_TT_1p8V_25C.db'])
     dc.extend_inputs(['PE_up.db', 'PE_up.lef'])
     dc.extend_inputs(['PE_down.db', 'PE_down.lef'])
     dc.extend_inputs(['PE_left.db', 'PE_left.lef'])
     dc.extend_inputs(['PE_right.db', 'PE_right.lef'])
-    for step in [iflow, init, power, place, cts, postcts_hold, route, postroute, signoff]:
+    for step in [iflow, init, power, place, cts, postcts_hold, route, postroute, signoff, pt_ptpx_genlibdb]:
         step.extend_inputs(['PE_up.lib', 'PE_up.lef'])
         step.extend_inputs(['PE_down.lib', 'PE_down.lef'])
         step.extend_inputs(['PE_left.lib', 'PE_left.lef'])
         step.extend_inputs(['PE_right.lib', 'PE_right.lef'])
+
     signoff.extend_inputs(['PE_up.gds', 'PE_down.gds', 'PE_left.gds', 'PE_right.gds'])
     gdsmerge.extend_inputs(['PE_up.gds', 'PE_down.gds', 'PE_left.gds', 'PE_right.gds'])
+    pt_ptpx_genlibdb.extend_inputs(['PE_up.gds', 'PE_down.gds', 'PE_left.gds', 'PE_right.gds'])
 
     iflow.extend_inputs(custom_flowstep.all_outputs())
+    pt_ptpx_genlibdb.extend_inputs(custom_flowstep.all_outputs())
     init.extend_inputs(custom_init.all_outputs())
     cts.extend_inputs(custom_cts.all_outputs())
     cts.get_param('order').insert(0, "cts-overrides.tcl")
 
     pt_signoff.extend_inputs(['PE_up.db', 'PE_down.db', 'PE_left.db', 'PE_right.db'])
+    pt_ptpx_genlibdb.extend_inputs(['PE_up.db', 'PE_down.db', 'PE_left.db', 'PE_right.db'])
 
     g.add_step(info)
     g.add_step(rtl)
@@ -101,7 +107,10 @@ def construct():
     g.add_step(magic_antenna)
     g.add_step(magic_gds2spice)
     g.add_step(calibre_lvs)
+    g.add_step( pt_ptpx_genlibdb    )
 
+    g.connect_by_name( adk,             pt_ptpx_genlibdb    )
+   # g.connect_by_name( sram,            pt_ptpx_genlibdb       )
     g.connect_by_name(adk,              dc)
     g.connect_by_name(constraints,      dc)
     g.connect_by_name(rtl,              dc)
@@ -182,7 +191,23 @@ def construct():
     g.connect_by_name(signoff,          calibre_lvs)
     g.connect_by_name(PE,               calibre_lvs)
 
+    # New liberty generation
+    g.connect( signoff.o('design.spef.gz'),   pt_ptpx_genlibdb.i('design.spef.gz' ) )
+    g.connect( signoff.o('design.vcs.v'  ),   pt_ptpx_genlibdb.i('design.vcs.v'   ) )
+    g.connect( dc.o(     'design.sdc'    ),   pt_ptpx_genlibdb.i('design.pt.sdc'  ) )
+
+
+    g.connect(PE.o('PE_down.db'),   pt_ptpx_genlibdb.i('PE_down.db' ) )
+    g.connect(PE.o('PE_up.db'  ),   pt_ptpx_genlibdb.i('PE_up.db'   ) )
+    g.connect(PE.o('PE_left.db'),   pt_ptpx_genlibdb.i('PE_left.db' ) )
+    g.connect(PE.o('PE_right.db'  ),   pt_ptpx_genlibdb.i('PE_right.db'   ) )
+    
+
+
     g.update_params(parameters)
+
+
+
 
     return g
 
